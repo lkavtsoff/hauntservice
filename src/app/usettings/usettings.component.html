@@ -1,0 +1,88 @@
+<div class="content">
+    <hheader></hheader>
+
+    <div class="container">
+        <h2>Set permissions for users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>Card ID</td>
+                    <td>Name</td>
+                    <td>Short Name</td>
+                    <td>Password</td>
+                    <td>Capabilities</td>
+                    <td>Items to show</td>
+                    <td>Department</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users; let i = index">
+                    <td><input type="text" value="{{user.cardid}}"></td>
+                    <td>
+                        <input type="text" value="{{user.name}}">
+                    </td>
+                    <td>
+                        <input type="text" value="{{user.shortName}}">
+                    </td>
+                    <td>
+                        <input type="text" value="{{user.pass}}">
+                    </td>
+                    <td>
+                        <label>
+                            <input type="radio" name="capability{{i}}" [checked]="user.rules === 'R'"/>
+                            Read
+                        </label>
+                        <label>
+                            <input type="radio" name="capability{{i}}" [checked]="user.rules === 'E'"/>
+                            Edit
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="radio" name="show{{i}}" [checked]="user.show === 'H'"/>
+                            Himself
+                        </label>
+                        <label>
+                            <input type="radio" name="show{{i}}" [checked]="user.show === 'A'"/>
+                            All
+                        </label>
+                    </td>
+                    <td>
+                        <select>
+                            <option *ngFor="let dpt of dpts" [selected]="user.dpt === dpt.name">{{dpt.name}}</option>
+                        </select>
+                    </td>
+                    <td><button class="small" (click)="unsetUser(i)">Unset</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="addNewUser()">Add new user</button>
+
+        <h2>Manage departments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>Dpt. Name</td>
+                    <td>Dpt. address</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dpt of dpts; let i = index">
+                    <td>
+                        <input type="text" value="{{dpt.name}}">
+                    </td>
+                    <td>
+                        <input type="text" value="{{dpt.address}}">
+                    </td>
+                    <td><button class="small" (click)="unsetDpt(i)">Unset</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="addNewDpt()">Add new department</button>
+
+    </div>
+</div>
+
+<hfooter></hfooter>

@@ -1,0 +1,37 @@
+:host ul {
+    display: block;
+    height: 30px;
+    overflow: hidden;
+}
+:host ul li {
+    display: block;
+    float: left;
+    height: 100%;
+    list-style-type: none;
+    cursor: help;
+    position: relative;
+}
+:host ul li span {
+    position: absolute;
+    display: block;
+    font-size: 11px;
+    line-height: 13px;
+    padding: 1px 3px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    top: 0;
+    right: 0;
+    width: 130px;
+    text-align: center;
+    font-weight: 100;
+    display: none;
+}
+:host ul li:hover span {
+    display: block;
+}
+/*:host ul li:nth-child(odd) {
+    background-color: #fbf587;
+}
+:host ul li:nth-child(even) {
+    background-color: #c0e19c;
+}*/

@@ -1,0 +1,91 @@
+<div class="content">
+    <hheader></hheader>
+    
+    <section class="filters">
+        <nav>
+            <ul>
+                <li><a [routerLink]="['/', 'timeline', '11-10-2017']">Yesterday</a></li>
+                <li><a [routerLink]="['/', 'timeline', '12-10-2017']">Today</a></li>
+            </ul>
+        </nav>
+    </section>
+
+    <div class="container">
+        <h2>Workers appearance for <span>{{today}}{{date}}</span>. Last update on <span>{{time}}</span></h2>
+        <table>
+            <thead>
+                <tr>
+                    <td rowspan="2">SN</td>
+                    <td rowspan="2">Full Name</td>
+                    <td rowspan="2">Dpt</td>
+                    <td colspan="4">Appearance</td>
+                    <td>TimeLine</td>
+                </tr>
+                <tr>
+                    <td class="small">Came</td>
+                    <td class="small">Left</td>
+                    <td class="small">In</td>
+                    <td class="small">Out</td>
+                    <td class="small">
+                        <table class="tline">
+                            <tr>
+                                <td>0<sup>00</sup></td>
+                                <td>1<sup>00</sup></td>
+                                <td>2<sup>00</sup></td>
+                                <td>3<sup>00</sup></td>
+                                <td>4<sup>00</sup></td>
+                                <td>5<sup>00</sup></td>
+                                <td>6<sup>00</sup></td>
+                                <td>7<sup>00</sup></td>
+                                <td>8<sup>00</sup></td>
+                                <td>9<sup>00</sup></td>
+                                <td>10<sup>00</sup></td>
+                                <td>11<sup>00</sup></td>
+                                <td>12<sup>00</sup></td>
+                                <td>13<sup>00</sup></td>
+                                <td>14<sup>00</sup></td>
+                                <td>15<sup>00</sup></td>
+                                <td>16<sup>00</sup></td>
+                                <td>17<sup>00</sup></td>
+                                <td>18<sup>00</sup></td>
+                                <td>19<sup>00</sup></td>
+                                <td>20<sup>00</sup></td>
+                                <td>21<sup>00</sup></td>
+                                <td>22<sup>00</sup></td>
+                                <td>23<sup>00</sup></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td class="narrow"><b>{{user?.shName}}</b></td>
+                    <td class="name">{{user?.name}}</td>
+                    <td class="narrow">{{user?.dpt}}</td>
+                    <td class="narrow">{{user?.came}}</td>
+                    <td class="narrow">{{user?.left}}</td>
+                    <td class="narrow">{{user?.sumIn}}</td>
+                    <td class="narrow">{{user?.sumOut}}</td>
+                    <td class="tl">
+                        <timeline [allEvents]="user.allEvents"></timeline>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <b>Legend:</b>
+                        <ul>
+                            <li><span class="green"></span> &ndash; <i>In Office</i></li>
+                            <li><span class="yellow"></span> &ndash; <i>Out of Office</i></li>
+                            <li><span class="brick"></span> &ndash; <i>Unknown</i></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<hfooter></hfooter>

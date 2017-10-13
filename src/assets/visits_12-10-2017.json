@@ -1,0 +1,67 @@
+{
+    "date": "12.10.2017",
+    "lastUpd": "18:56",
+    "visits": [
+        {
+            "cardid": "123451",
+            "user": "Vasya Pupkin",
+            "visitsIn": [
+                "9:05",
+                "12:06",
+                "13:24"
+            ],
+            "visitsOut": [
+                "11:44",
+                "12:55",
+                "17:54"
+            ]
+        },
+        {
+            "cardid": "123452",
+            "user": "Petya Vasechkin",
+            "visitsIn": [
+                "8:25"
+            ],
+            "visitsOut": [
+                "18:12"
+            ]
+        },
+        {
+            "cardid": "123453",
+            "user": "Vova Ivanov",
+            "visitsIn": [
+                "8:29",
+                "14:22",
+                "16:08"
+            ],
+            "visitsOut": [
+                "14:13",
+                "15:59",
+                "18:22"
+            ]
+        },
+        {
+            "cardid": "123454",
+            "user": "Lena Golovach",
+            "visitsIn": [
+                "8:30",
+                "14:20"
+            ],
+            "visitsOut": [
+                "13:50",
+                "18:00"
+            ]
+        },
+        {
+            "cardid": "123455",
+            "user": "Alexey Petrov",
+            "visitsIn": [
+                "12:01"
+            ],
+            "visitsOut": [
+                "14:11"
+            ]
+        }
+        
+    ]
+}

@@ -1,0 +1,68 @@
+{
+    "permissions": [
+        {
+            "cardid": "123451",
+            "name": "Vasya Pupkin",
+            "shortName": "VP",
+            "dpt": "Main",
+            "rules": "R",
+            "role": "user",
+            "show": "H",
+            "pass": "1111"
+        }, {
+            "cardid": "123452",
+            "name": "Petya Vasechkin-Ivengorodsky",
+            "shortName": "PV",
+            "dpt": "Main",
+            "rules": "E",
+            "role": "admin",
+            "show": "A",
+            "pass": "2222"
+        }, {
+            "cardid": "123453",
+            "name": "Vova Ivanov",
+            "shortName": "VI",
+            "dpt": "Sub",
+            "rules": "R",
+            "role": "user",
+            "show": "H",
+            "pass": "3333"
+        }, {
+            "cardid": "123454",
+            "name": "Lena Golovach",
+            "shortName": "LG",
+            "dpt": "Main",
+            "rules": "E",
+            "role": "user",
+            "show": "H",
+            "pass": "4444"
+        }, {
+            "cardid": "123455",
+            "name": "Alexey Petrov",
+            "shortName": "AP",
+            "dpt": "Sub",
+            "rules": "R",
+            "role": "user",
+            "show": "A",
+            "pass": "5555"
+        }, {
+            "cardid": "123456",
+            "name": "Vasyliy Traktorenko",
+            "shortName": "VT",
+            "dpt": "Main",
+            "rules": "R",
+            "role": "user",
+            "show": "A",
+            "pass": "6666"
+        }
+    ],
+    "departments": [
+        {
+            "name": "Main",
+            "address": "Lenina, 69"
+        }, {
+            "name": "Sub",
+            "address": "Sovietskaya, 25"
+        }
+    ]
+}

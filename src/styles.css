@@ -1,1 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient( 180deg, rgba(45, 65, 112, .025) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 135deg, rgba(129, 187, 65, .02) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 180deg, rgba(45, 65, 112, .015) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 135deg, rgba(129, 187, 65, .01) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 45deg, rgba(45, 65, 112, .025) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 45deg, rgba(129, 187, 65, .02) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 45deg, rgba(45, 65, 112, .015) 50%, rgba(255,255,255, 0) 50%),
+                linear-gradient( 45deg, rgba(129, 187, 65, .01) 50%, rgba(255,255,255, 0) 50%);
+    background-size: 7em 7em, 5em 5em, 3em 3em, 1em 1em, 7em 7em, 5em 5em, 3em 3em, 1em 1em;
+}
+
+/* indexed colors */
+.yellow {
+    /*background-color: #fbf587;*/
+    background: linear-gradient( 90deg, rgba(251, 245, 135, 0.6) 0%, rgba(251, 245, 135, 1) 100%);
+}
+.green {
+    /*background-color: #c0e19c;*/
+    background: linear-gradient( 90deg, rgba(192, 225, 156, 0.7) 0%, rgba(192, 225, 156, 1) 100%);
+}
+.dark_green {
+    background-color: #68c398;
+}
+.light_blue {
+    background-color: #59c7c8;
+}
+.blue {
+    background-color: #608dc8;
+}
+.dark_blue {
+    background-color: #5a68b3;
+}
+.violet {
+    background-color: #826db2;
+}
+.magenta {
+    background-color: #bf80b7;
+}
+.red {
+    background-color: #f67d71;
+}
+.brick {
+    /*background-color: #f59179;*/
+    background: linear-gradient( 90deg, rgba(245, 145, 121, 0.8) 0%, rgba(245, 145, 121, 1) 100%);
+}
+.orange {
+    background-color: #f4ab76;
+}
+.light_orange {
+    background-color: #fcc87c;
+}

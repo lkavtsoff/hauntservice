@@ -1,0 +1,33 @@
+:host header {
+    background-color: #2d4170;
+}
+:host header {
+    height: 40px;
+}
+:host header p {
+    text-align: center;
+    color: #fff;
+    padding: 10px 20px;
+    line-height: 20px;
+    height: 20px;
+    float: left;
+    font-size: 16px;
+}
+:host header nav {
+    display: block;
+    float: right;
+    padding: 10px 20px;
+    height: 20px;
+    line-height: 20px;
+}
+:host header a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 5px;
+    color: #fff;
+    transition: 0.2s all ease-in-out;
+}
+:host header a:hover {
+    color: #a6b7dd;
+}

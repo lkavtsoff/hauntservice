@@ -1,0 +1,7 @@
+<div class="wrap">
+    <p>Project Logo</p>
+    <input type="text" placeholder="Worker Name or Shortname" [(ngModel)]="userName">
+    <input type="password" placeholder="Worker Password" [(ngModel)]="userPass">
+    <div class="denied brick" *ngIf="denied">Access denied. Please, attentively verify your personal data.</div>
+    <button (click)="verifyUser(userName, userPass)">Sign In</button>
+</div>

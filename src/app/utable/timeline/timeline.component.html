@@ -1,0 +1,10 @@
+<ul>
+  <!--<li style="width:20%" class="red" title="out"></li>
+  <li style="width:25%" class="green" title="in"></li>
+  <li style="width:10%" class="red" title="out"></li>
+  <li style="width:25%" class="green" title="in"></li>
+  <li style="width:20%" class="red" title="out"></li>-->
+  <li *ngFor="let percent of percents" [style.width.%]="percent.width" [ngClass]="getClass(percent.msg)">
+    <span>{{percent.msg}} {{percent.start}} - {{percent.end}}</span>
+  </li>
+</ul>

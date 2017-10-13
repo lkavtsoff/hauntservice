@@ -1,0 +1,9 @@
+:host footer {
+    background-color: #2d4170;
+}
+:host footer p {
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+    line-height: 20px;
+}
