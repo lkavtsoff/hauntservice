@@ -18,7 +18,12 @@ export class LoginService {
         for (let i in allUsersList) {
             if ( (allUsersList[i].shortName == name) || (allUsersList[i].name == name) ) {
                 if (allUsersList[i].pass == pass) {
-                    this.hauntService.autorized = true;
+                    //console.log (allUsersList[i]);
+                    this.hauntService.permissions.autorized = true;
+                    this.hauntService.permissions.rules = allUsersList[i].rules;
+                    this.hauntService.permissions.fullName = allUsersList[i].name;
+                    this.hauntService.permissions.show = allUsersList[i].show;
+                    //console.log (this.hauntService.permissions);
                     return true;
                 }
             }

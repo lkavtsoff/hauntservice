@@ -11,6 +11,8 @@ import { uVisits } from './uvisits';
 
 export class VisitsService {
 
+    lastUpd: number = 0;
+
     constructor (private http: Http, private hauntService: HauntService) {}
     
     getVisits(date_id) : Observable<any[]> {
@@ -19,6 +21,15 @@ export class VisitsService {
             let userList = resp.json().visits;
             let curDate = resp.json().date;
             let curTime = resp.json().lastUpd;
+
+            // Checks if today
+            let ifToday = this.checkToday(curDate);
+            if (ifToday != '') {
+                this.lastUpd = this.parseToMins(curTime);
+            } else {
+                this.lastUpd = 0;
+            }
+
             let users : uVisits[] = [];
 
             let settings = this.hauntService.allUserSettings;
@@ -43,16 +54,32 @@ export class VisitsService {
                     }
                 }
                 if (foundU == false) {
-                    users.push({
-                        name: settings[i].name,
-                        shName: settings[i].shortName,
-                        dpt: settings[i].dpt,
-                        came: '-',
-                        left: '-',
-                        sumIn: '0:00',
-                        sumOut: '0:00',
-                        allEvents: [{start: '0:00', end: '23:59', width: 100, msg: 'Out of Office'}]
-                    });
+                    if (this.lastUpd == 0) {
+                        users.push({
+                            name: settings[i].name,
+                            shName: settings[i].shortName,
+                            dpt: settings[i].dpt,
+                            came: '-',
+                            left: '-',
+                            sumIn: '0:00',
+                            sumOut: '0:00',
+                            allEvents: [{start: '0:00', end: '23:59', width: 100, msg: 'Out of Office'}]
+                        });
+                    } else {
+                        users.push({
+                            name: settings[i].name,
+                            shName: settings[i].shortName,
+                            dpt: settings[i].dpt,
+                            came: '-',
+                            left: '-',
+                            sumIn: '0:00',
+                            sumOut: '0:00',
+                            allEvents: [
+                                {start: '0:00', end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd), msg: 'Out of Office'},
+                                {start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'}
+                            ]
+                        });
+                    }
                 }
             }
 
@@ -80,6 +107,7 @@ export class VisitsService {
         let timeNum: number = parseInt(timeArr[0]) * 60 + parseInt(timeArr[1]);
         return timeNum;
     }
+
     parseToText (val) : string {
         let mins = val%60;
         let hrs = (val - mins)/60;
@@ -122,29 +150,79 @@ export class VisitsService {
 
     // Creating Report
     createReport(arr) {
-        if (arr.length == 1) {
-            if (arr[0].type == 'in') {
+        if (arr.length == 0) {
+            if (this.lastUpd == 0) {
+                return {
+                    intsInfo: [{start: '0:00', end: '23:59', width: 100, msg: 'Out of Office'}],
+                    came: '-',
+                    left: '-',
+                    in: '0:00',
+                    out: '0:00'
+                }
+            } else {
                 return {
                     intsInfo: [
-                        {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Out of Office'},
-                        {start: this.parseToText (arr[0].time), end: '23:59', width: this.countPercent(1440 - arr[0].time), msg: 'Unknown'}
+                        {start: '0:00', end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd), msg: 'Out of Office'},
+                        {start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'}
                     ],
-                    came: this.parseToText (arr[0].time),
-                    left: '?',
+                    came: '-',
+                    left: '-',
                     in: '0:00',
                     out: '0:00'
                 }
             }
+        }
+        if (arr.length == 1) {
+            if (arr[0].type == 'in') {
+                if (this.lastUpd == 0) {
+                    return {
+                        intsInfo: [
+                            {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Out of Office'},
+                            {start: this.parseToText (arr[0].time), end: '23:59', width: this.countPercent(1440 - arr[0].time), msg: 'Unknown'}
+                        ],
+                        came: this.parseToText (arr[0].time),
+                        left: '?',
+                        in: '0:00',
+                        out: '0:00'
+                    }
+                } else {
+                    return {
+                        intsInfo: [
+                            {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Out of Office'},
+                            {start: this.parseToText (arr[0].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[0].time), msg: 'In office'},
+                            {start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'}
+                        ],
+                        came: this.parseToText (arr[0].time),
+                        left: '?',
+                        in: '0:00',
+                        out: '0:00'
+                    }
+                }
+            }
             if (arr[0].type == 'out') {
-                return {
-                    intsInfo: [
-                        {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Unknown'},
-                        {start: this.parseToText (arr[0].time), end: '23:59', width: this.countPercent(1440 - arr[0].time), msg: 'Out of Office'}
-                    ],
-                    came: '?',
-                    left: this.parseToText (arr[0].time),
-                    in: '0:00',
-                    out: '0:00'
+                if (this.lastUpd == 0) {
+                    return {
+                        intsInfo: [
+                            {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Unknown'},
+                            {start: this.parseToText (arr[0].time), end: '23:59', width: this.countPercent(1440 - arr[0].time), msg: 'Out of Office'}
+                        ],
+                        came: '?',
+                        left: this.parseToText (arr[0].time),
+                        in: '0:00',
+                        out: '0:00'
+                    }
+                } else {
+                    return {
+                        intsInfo: [
+                            {start: '0:00', end: this.parseToText (arr[0].time), width: this.countPercent(arr[0].time), msg: 'Unknown'},
+                            {start: this.parseToText (arr[0].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[0].time), msg: 'Out of Office'},
+                            {start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'}
+                        ],
+                        came: '?',
+                        left: this.parseToText (arr[0].time),
+                        in: '0:00',
+                        out: '0:00'
+                    }
                 }
             }
         }
@@ -169,23 +247,54 @@ export class VisitsService {
             }
             if (i == (arr.length - 1)) {
                 if (arr[i].type == 'out') {
-                    if (arr[i - 1].type == 'in') {
-                        full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'In office'});
-                        sumInOffice += (arr[i].time - arr[i - 1].time);
-                        full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Out of Office'});
-                        full.left = this.parseToText (arr[i].time);
+                    if (this.lastUpd == 0) {
+                        if (arr[i - 1].type == 'in') {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'In office'});
+                            sumInOffice += (arr[i].time - arr[i - 1].time);
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Out of Office'});
+                            full.left = this.parseToText (arr[i].time);
+                        } else {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                        }
                     } else {
-                        full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
-                        full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                        if (arr[i - 1].type == 'in') {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'In office'});
+                            sumInOffice += (arr[i].time - arr[i - 1].time);
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[i].time), msg: 'Out of Office'});
+                            sumOutOffice += (this.lastUpd - arr[i].time);
+                            full.intsInfo.push({start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'});
+                            //full.left = this.parseToText (arr[i].time);
+                        } else {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[i].time), msg: 'Out of Office'});
+                            sumOutOffice += (this.lastUpd - arr[i].time);
+                            full.intsInfo.push({start: this.parseToText (this.lastUpd), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'});
+                        }
                     }
                 } else {
-                    if (arr[i - 1].type == 'out') {
-                        full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Out of Office'});
-                        sumOutOffice += (arr[i].time - arr[i - 1].time);
-                        full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                    if (this.lastUpd == 0) {
+                        if (arr[i - 1].type == 'out') {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Out of Office'});
+                            sumOutOffice += (arr[i].time - arr[i - 1].time);
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                        } else {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                        }
                     } else {
-                        full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
-                        full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - arr[i].time), msg: 'Unknown'});
+                        if (arr[i - 1].type == 'out') {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Out of Office'});
+                            sumOutOffice += (arr[i].time - arr[i - 1].time);
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[i].time), msg: 'In office'});
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'});
+                            sumInOffice += (this.lastUpd - arr[i].time);
+                        } else {
+                            full.intsInfo.push({start: this.parseToText (arr[i - 1].time), end: this.parseToText (arr[i].time), width: this.countPercent(arr[i].time - arr[i - 1].time), msg: 'Unknown'});
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: this.parseToText (this.lastUpd), width: this.countPercent(this.lastUpd - arr[i].time), msg: 'In office'});
+                            sumInOffice += (this.lastUpd - arr[i].time);
+                            full.intsInfo.push({start: this.parseToText (arr[i].time), end: '23:59', width: this.countPercent(1440 - this.lastUpd), msg: 'Untracked'});
+                        }
                     }
                 }
                 continue;
@@ -216,8 +325,8 @@ export class VisitsService {
 
     // Check if Today
     checkToday(date) {
-        let today = new Date();
-        let day: string
+        let today = new Date(2017, 9, 12);
+        let day: string;
         let month: string;
         let dd: number = today.getDate();
         let mm: number = today.getMonth();

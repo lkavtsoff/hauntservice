@@ -18,49 +18,56 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of users; let i = index">
-                    <td><input type="text" value="{{user.cardid}}"></td>
                     <td>
-                        <input type="text" value="{{user.name}}">
+                        <mat-form-field>
+                            <input matInput value="{{user.cardid}}">
+                        </mat-form-field>
                     </td>
                     <td>
-                        <input type="text" value="{{user.shortName}}">
+                        <mat-form-field>
+                            <input matInput value="{{user.name}}">
+                        </mat-form-field>
                     </td>
                     <td>
-                        <input type="text" value="{{user.pass}}">
+                        <mat-form-field>
+                            <input matInput value="{{user.shortName}}">
+                        </mat-form-field>
                     </td>
                     <td>
-                        <label>
-                            <input type="radio" name="capability{{i}}" [checked]="user.rules === 'R'"/>
-                            Read
-                        </label>
-                        <label>
-                            <input type="radio" name="capability{{i}}" [checked]="user.rules === 'E'"/>
-                            Edit
-                        </label>
+                        <mat-form-field>
+                            <input matInput value="{{user.pass}}">
+                        </mat-form-field>
                     </td>
                     <td>
-                        <label>
-                            <input type="radio" name="show{{i}}" [checked]="user.show === 'H'"/>
-                            Himself
-                        </label>
-                        <label>
-                            <input type="radio" name="show{{i}}" [checked]="user.show === 'A'"/>
-                            All
-                        </label>
+                        <mat-radio-group>
+                            <mat-radio-button value="r" name="capability{{i}}" [checked]="user.rules === 'R'">Read</mat-radio-button>
+                            <mat-radio-button value="e" name="capability{{i}}" [checked]="user.rules === 'E'">Edit</mat-radio-button>
+                        </mat-radio-group>
                     </td>
                     <td>
-                        <select>
-                            <option *ngFor="let dpt of dpts" [selected]="user.dpt === dpt.name">{{dpt.name}}</option>
-                        </select>
+                        <mat-radio-group>
+                            <mat-radio-button value="h" name="show{{i}}" [checked]="user.show === 'H'">Himself</mat-radio-button>
+                            <mat-radio-button value="a" name="show{{i}}" [checked]="user.show === 'A'">All</mat-radio-button>
+                        </mat-radio-group>
                     </td>
-                    <td><button class="small" (click)="unsetUser(i)">Unset</button></td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select [(ngModel)]="user.dpt">
+                                <mat-option *ngFor="let dpt of dpts" [value]="dpt.name">{{dpt.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td class="actions_cell">
+                        <mat-icon class="blue_c">save</mat-icon>
+                        <mat-icon class="brick_c" (click)="unsetUser(i)">remove_circle</mat-icon>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <button (click)="addNewUser()">Add new user</button>
+        <button (click)="addNewUser()"><mat-icon>add_circle</mat-icon> Add new user</button>
 
         <h2>Manage departments</h2>
-        <table>
+        <table class="narrow">
             <thead>
                 <tr>
                     <td>Dpt. Name</td>
@@ -71,16 +78,23 @@
             <tbody>
                 <tr *ngFor="let dpt of dpts; let i = index">
                     <td>
-                        <input type="text" value="{{dpt.name}}">
+                        <mat-form-field>
+                            <input matInput value="{{dpt.name}}" [(ngModel)]="dpt.name">
+                        </mat-form-field>
                     </td>
                     <td>
-                        <input type="text" value="{{dpt.address}}">
+                        <mat-form-field>
+                            <input matInput value="{{dpt.address}}" [(ngModel)]="dpt.address">
+                        </mat-form-field>
                     </td>
-                    <td><button class="small" (click)="unsetDpt(i)">Unset</button></td>
+                    <td class="actions_cell">
+                        <mat-icon class="blue_c">save</mat-icon>
+                        <mat-icon class="brick_c" (click)="unsetDpt(i)">remove_circle</mat-icon>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <button (click)="addNewDpt()">Add new department</button>
+        <button (click)="addNewDpt()"><mat-icon>add_circle</mat-icon> Add new department</button>
 
     </div>
 </div>

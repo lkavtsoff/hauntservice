@@ -12,12 +12,12 @@ export class HauntGuard implements CanActivate{
     constructor ( private hauntService: HauntService, private router: Router ) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean {
-        console.log (this.hauntService.autorized);
-        /*if (this.hauntService.autorized == false) {
-           this.router.navigate(['/login']);
+        /*if (this.hauntService.autorized) {
+            return true;
         } else {
-           return true;
+            return false;
         }*/
         return true;
     }
+
 }

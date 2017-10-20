@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 * {
     margin: 0;
     padding: 0;
@@ -61,4 +63,76 @@ body {
 }
 .light_orange {
     background-color: #fcc87c;
+}
+.gray {
+    /*background-color: #d6d6d6;*/
+    background: linear-gradient( 90deg, rgba(214, 214, 214, 0.6) 0%, rgba(214, 214, 214, 1) 100%);
+}
+/* text colors */
+.brick_c {
+    color: #f59179;
+}
+.blue_c {
+    color: #608dc8;
+}
+.dark_blue_c {
+    color: #608dc8;
+}
+.green_c {
+    color: #c0e19c;
+}
+
+/* form elements styling */
+/* radio buttons */
+.container .mat-radio-label-content {
+    font-size: 12px;
+    padding-left: 2px;
+}
+.container .mat-radio-container,
+.container .mat-radio-outer-circle,
+.container .mat-radio-inner-circle {
+    width: 16px;
+    height: 16px;
+}
+.container .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #2d4170;
+}
+.container .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #2d4170;
+}
+.container .mat-radio-ripple {
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+}
+.container .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color: rgba(192, 225, 156, .26);
+}
+/* selects */
+.container .mat-form-field {
+    max-width: 120px;
+}
+.container .mat-form-field-infix {
+    border-top: none;
+}
+.container .mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+.container .mat-form-field-underline {
+    bottom: 0;
+}
+.container .mat-form-field.mat-focused.mat-primary .mat-select-arrow,
+.cdk-overlay-container .mat-primary .mat-option.mat-selected {
+    color: #2d4170;
+}
+.container .mat-form-field-ripple {
+    background-color: #2d4170;
+}
+/* inputs */
+ulogin .wrap .mat-focused .mat-form-field-ripple {
+    background-color: #2d4170;
+}
+ulogin .wrap .mat-focused .mat-form-field-placeholder {
+    color: #2d4170;
 }

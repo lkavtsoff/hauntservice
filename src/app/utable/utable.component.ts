@@ -21,6 +21,9 @@ export class UtableComponent implements OnInit {
     time: string;
     today: string;
 
+    collapsed: boolean = false;
+    wideScale: boolean = false;
+
     private dateid: number;
     private subscription: Subscription;
 
@@ -32,7 +35,7 @@ export class UtableComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.startTableBuild();
+        //this.userInfo = this.visitsService.getPermissions();
     }
 
     ngOnDestroy(){
@@ -46,6 +49,11 @@ export class UtableComponent implements OnInit {
             this.time = data[2];
             this.today = this.visitsService.checkToday(this.date);
         });
+    }
+
+    collapseTable() {
+        /*this.collapsed = true;*/
+        console.log (this.collapsed);
     }
 
 }

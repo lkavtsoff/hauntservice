@@ -2,7 +2,9 @@
     background-color: #2d4170;
 }
 :host header {
-    height: 40px;
+    height: 60px;
+    padding: 10px 20px;
+    box-sizing: border-box;
 }
 :host header p {
     text-align: center;
@@ -16,9 +18,8 @@
 :host header nav {
     display: block;
     float: right;
-    padding: 10px 20px;
-    height: 20px;
-    line-height: 20px;
+    height: 40px;
+    line-height: 40px;
 }
 :host header a {
     display: inline-block;
@@ -29,5 +30,36 @@
     transition: 0.2s all ease-in-out;
 }
 :host header a:hover {
-    color: #a6b7dd;
+    color: #c0e19c;
+}
+
+/* menu block */
+:host header h2 {
+    float: right;
+    height: 100%;
+    line-height: 100%;
+    font-size: 16px;
+    color: #fff;
+    font-weight: normal;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #fff;
+}
+:host header h2 > div {
+    display: inline-block;
+}
+:host header .mat-icon {
+    font-size: 30px;
+    height: 40px;
+    line-height: 40px;
+    width: auto;
+    vertical-align: -8px;
+    margin: 0 5px;
+}
+:host header .logout {
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+}
+:host header .logout:hover {
+    color: #c0e19c;
 }

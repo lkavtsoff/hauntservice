@@ -4,6 +4,7 @@
     <section class="filters">
         <nav>
             <ul>
+                <li><a [routerLink]="['/', 'timeline', '10-10-2017']">2 days ago</a></li>
                 <li><a [routerLink]="['/', 'timeline', '11-10-2017']">Yesterday</a></li>
                 <li><a [routerLink]="['/', 'timeline', '12-10-2017']">Today</a></li>
             </ul>
@@ -11,21 +12,28 @@
     </section>
 
     <div class="container">
-        <h2>Workers appearance for <span>{{today}}{{date}}</span>. Last update on <span>{{time}}</span></h2>
+        <h2>Workers appearance for 
+            <span>{{today}}{{date}}</span>. Last update on <span>{{time}}</span>
+            <span class="refresh" matTooltip="Refresh"><mat-icon>cached</mat-icon></span>
+        </h2>
         <table>
             <thead>
                 <tr>
                     <td rowspan="2">SN</td>
-                    <td rowspan="2">Full Name</td>
-                    <td rowspan="2">Dpt</td>
-                    <td colspan="4">Appearance</td>
-                    <td>TimeLine</td>
+                    <td [(ngClass)]="this.collapsed" rowspan="2">Full Name</td>
+                    <td [(ngClass)]="this.collapsed" rowspan="2">Dpt</td>
+                    <td [(ngClass)]="this.collapsed" colspan="4">Appearance</td>
+                    <td>
+                        <div matTooltip="Collapse Table" class="collapse" matTooltipPosition="above" (click)="collapseTable()"><mat-icon>skip_previous</mat-icon></div>
+                        TimeLine
+                        <div matTooltip="Change Timescale" class="tscale" matTooltipPosition="above"><mat-icon>access_time</mat-icon></div>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="small">Came</td>
-                    <td class="small">Left</td>
-                    <td class="small">In</td>
-                    <td class="small">Out</td>
+                    <td class="small" [(ngClass)]="this.collapsed">Came</td>
+                    <td class="small" [(ngClass)]="this.collapsed">Left</td>
+                    <td class="small" [(ngClass)]="this.collapsed">In</td>
+                    <td class="small" [(ngClass)]="this.collapsed">Out</td>
                     <td class="small">
                         <table class="tline">
                             <tr>
@@ -61,12 +69,12 @@
             <tbody>
                 <tr *ngFor="let user of users">
                     <td class="narrow"><b>{{user?.shName}}</b></td>
-                    <td class="name">{{user?.name}}</td>
-                    <td class="narrow">{{user?.dpt}}</td>
-                    <td class="narrow">{{user?.came}}</td>
-                    <td class="narrow">{{user?.left}}</td>
-                    <td class="narrow">{{user?.sumIn}}</td>
-                    <td class="narrow">{{user?.sumOut}}</td>
+                    <td class="name" [(ngClass)]="this.collapsed">{{user?.name}}</td>
+                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.dpt}}</td>
+                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.came}}</td>
+                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.left}}</td>
+                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.sumIn}}</td>
+                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.sumOut}}</td>
                     <td class="tl">
                         <timeline [allEvents]="user.allEvents"></timeline>
                     </td>
@@ -80,6 +88,7 @@
                             <li><span class="green"></span> &ndash; <i>In Office</i></li>
                             <li><span class="yellow"></span> &ndash; <i>Out of Office</i></li>
                             <li><span class="brick"></span> &ndash; <i>Unknown</i></li>
+                            <li><span class="gray"></span> &ndash; <i>Untracked</i></li>
                         </ul>
                     </td>
                 </tr>
@@ -87,5 +96,4 @@
         </table>
     </div>
 </div>
-
 <hfooter></hfooter>

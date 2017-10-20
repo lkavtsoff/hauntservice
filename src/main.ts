@@ -4,6 +4,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { HauntModule } from './app/haunt.module';
 import { environment } from './environments/environment';
 
+import 'hammerjs';
+
 if (environment.production) {
   enableProdMode();
 }

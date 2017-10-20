@@ -22,6 +22,7 @@ export class TimelineComponent implements OnInit {
     if (msg == 'Out of Office') return 'yellow';
     if (msg == 'In office') return 'green';
     if (msg == 'Unknown') return 'brick';
+    if (msg == 'Untracked') return 'gray';
   }
 
 }

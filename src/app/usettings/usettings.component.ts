@@ -7,7 +7,7 @@ import { HauntService } from '../haunt.service';
   selector: 'usettings',
   templateUrl: './usettings.component.html',
   styleUrls: ['./usettings.component.css'],
-  providers: [HauntService]
+  //providers: [HauntService]
 })
 
 export class UsettingsComponent implements OnInit {
@@ -18,17 +18,13 @@ export class UsettingsComponent implements OnInit {
   constructor(private hauntService: HauntService) { }
 
   ngOnInit() {
-    /*setTimeout(() => {
-      //this.users = this.settingsService.getUsers();
-      //this.dpts = this.settingsService.getDpts();
-      this.users = this.hauntService.allUserSettings;
-      this.dpts = this.hauntService.allDpts;
-      console.log (this.hauntService.returnUsers(), this.hauntService.allDpts);
-    }, 1000);*/
-    this.hauntService.getUserProfiles().subscribe((data)=>{
-      this.users = data[0];
-      this.dpts = data[1];
-    });
+    let int = setInterval(() => {
+      if ( (this.hauntService.getUserSettings().length != 0) && (this.hauntService.getDpts().length != 0) ) {
+        clearInterval(int);
+        this.users = this.hauntService.getUserSettings();
+        this.dpts = this.hauntService.getDpts();
+      }
+    }, 10);
   }
 
   addNewUser() {
@@ -49,6 +45,7 @@ export class UsettingsComponent implements OnInit {
       address: "",
       name: ""
     });
+    //console.log (this.dpts);
   }
 
   unsetUser(num) {

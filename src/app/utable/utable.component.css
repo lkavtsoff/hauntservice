@@ -121,8 +121,12 @@
     font-weight: 300;
     border-right: 1px solid #333;
     overflow: hidden;
-    padding: 0;
+    padding: 0 2px;
     letter-spacing: -0.5px;
+    text-align: left;
+}
+:host .container > table td > .tline td:nth-child(2n) {
+    /*display: none;*/
 }
 :host .container > table td > .tline td sup {
     text-decoration: underline;
@@ -155,4 +159,42 @@
     box-sizing: border-box;
     margin: 0 3px 0 8px;
     vertical-align: -1px;
+}
+
+/* collapse, scale, refresh buttons */
+:host .container table thead tr td:last-child {
+    position: relative;
+}
+:host .container table thead tr td .collapse {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
+:host .container table thead tr td .collapse .mat-icon {
+    color: #2d4170;
+    cursor: pointer;
+}
+:host .container table thead tr td .tscale {
+    position: absolute;
+    top: 7px;
+    right: 6px;
+}
+:host .container table thead tr td .tscale .mat-icon {
+    color: #2d4170;
+    cursor: pointer;
+    font-size: 18px;
+}
+:host .container h2 .refresh {
+    color: #81bb41;
+    cursor: pointer;
+    margin-left: 5px;
+}
+:host .container h2 .refresh .mat-icon {
+    font-size: 30px;
+    vertical-align: -8px;
+}
+
+/* collapsed table rows */
+:host .container table tr td.collapsed {
+    display: none;
 }

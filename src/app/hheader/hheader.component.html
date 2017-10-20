@@ -1,10 +1,9 @@
 <header>
-    <p><a routerLink="/">Project Logo</a></p>
+    <p>Project Logo</p>
+    <h2><mat-icon>face</mat-icon> Hi, {{userInfo.fullName}}! <div matTooltip="Log out" class="logout" (click)="logOutUser()"><mat-icon>exit_to_app</mat-icon></div></h2>
     <nav>
-        <a routerLink="/login">Login</a>
-        <a routerLink="/timeline">Table</a>
-        <a routerLink="/settings">Settings</a>
-        <a href="#">Logout</a>
+        <a matTooltip="User Permissions" routerLink="/settings"><mat-icon>settings</mat-icon></a>
+        <a matTooltip="Show Timeline" routerLink="/timeline"><mat-icon>timeline</mat-icon></a>
     </nav>
     <router-outlet></router-outlet>
 </header>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 import { LoginService } from './ulogin.service';
 import { uProfile } from '../uprofile';
