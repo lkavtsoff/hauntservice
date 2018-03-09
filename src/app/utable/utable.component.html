@@ -1,99 +1,110 @@
 <div class="content">
-    <hheader></hheader>
+    <hheader [curPage]="curPage"></hheader>
     
-    <section class="filters">
+    <!--<section class="filters">
         <nav>
-            <ul>
+            <ul class="clearfix">
                 <li><a [routerLink]="['/', 'timeline', '10-10-2017']">2 days ago</a></li>
                 <li><a [routerLink]="['/', 'timeline', '11-10-2017']">Yesterday</a></li>
                 <li><a [routerLink]="['/', 'timeline', '12-10-2017']">Today</a></li>
             </ul>
         </nav>
-    </section>
+    </section>-->
 
     <div class="container">
-        <h2>Workers appearance for 
-            <span>{{today}}{{date}}</span>. Last update on <span>{{time}}</span>
-            <span class="refresh" matTooltip="Refresh"><mat-icon>cached</mat-icon></span>
+        <mat-form-field style="display:none;">
+            <input matInput (dateChange)="addNewDate($event)" [min]="minDay" [max]="maxToday" [matDatepicker]="picker">
+            <mat-datepicker touchUi="true" switchToMonthViewLabel="Change to month view" #picker></mat-datepicker>
+        </mat-form-field>
+        <h2>
+            <mat-datepicker-toggle matTooltip="Set another date" mdSuffix [for]="picker"></mat-datepicker-toggle>
+            Workers appearance<br> for 
+            <span>{{today}}{{date}}</span>.<br> Last update on <span>{{time}}</span>
+            <span *ngIf="this.isToday" class="refresh" matTooltip="Refresh" (click)="refreshTable()"><mat-icon>cached</mat-icon></span>
         </h2>
-        <table>
-            <thead>
-                <tr>
-                    <td rowspan="2">SN</td>
-                    <td [(ngClass)]="this.collapsed" rowspan="2">Full Name</td>
-                    <td [(ngClass)]="this.collapsed" rowspan="2">Dpt</td>
-                    <td [(ngClass)]="this.collapsed" colspan="4">Appearance</td>
-                    <td>
-                        <div matTooltip="Collapse Table" class="collapse" matTooltipPosition="above" (click)="collapseTable()"><mat-icon>skip_previous</mat-icon></div>
-                        TimeLine
-                        <div matTooltip="Change Timescale" class="tscale" matTooltipPosition="above"><mat-icon>access_time</mat-icon></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="small" [(ngClass)]="this.collapsed">Came</td>
-                    <td class="small" [(ngClass)]="this.collapsed">Left</td>
-                    <td class="small" [(ngClass)]="this.collapsed">In</td>
-                    <td class="small" [(ngClass)]="this.collapsed">Out</td>
-                    <td class="small">
-                        <table class="tline">
-                            <tr>
-                                <td>0<sup>00</sup></td>
-                                <td>1<sup>00</sup></td>
-                                <td>2<sup>00</sup></td>
-                                <td>3<sup>00</sup></td>
-                                <td>4<sup>00</sup></td>
-                                <td>5<sup>00</sup></td>
-                                <td>6<sup>00</sup></td>
-                                <td>7<sup>00</sup></td>
-                                <td>8<sup>00</sup></td>
-                                <td>9<sup>00</sup></td>
-                                <td>10<sup>00</sup></td>
-                                <td>11<sup>00</sup></td>
-                                <td>12<sup>00</sup></td>
-                                <td>13<sup>00</sup></td>
-                                <td>14<sup>00</sup></td>
-                                <td>15<sup>00</sup></td>
-                                <td>16<sup>00</sup></td>
-                                <td>17<sup>00</sup></td>
-                                <td>18<sup>00</sup></td>
-                                <td>19<sup>00</sup></td>
-                                <td>20<sup>00</sup></td>
-                                <td>21<sup>00</sup></td>
-                                <td>22<sup>00</sup></td>
-                                <td>23<sup>00</sup></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users">
-                    <td class="narrow"><b>{{user?.shName}}</b></td>
-                    <td class="name" [(ngClass)]="this.collapsed">{{user?.name}}</td>
-                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.dpt}}</td>
-                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.came}}</td>
-                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.left}}</td>
-                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.sumIn}}</td>
-                    <td class="narrow" [(ngClass)]="this.collapsed">{{user?.sumOut}}</td>
-                    <td class="tl">
-                        <timeline [allEvents]="user.allEvents"></timeline>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="8">
-                        <b>Legend:</b>
-                        <ul>
-                            <li><span class="green"></span> &ndash; <i>In Office</i></li>
-                            <li><span class="yellow"></span> &ndash; <i>Out of Office</i></li>
-                            <li><span class="brick"></span> &ndash; <i>Unknown</i></li>
-                            <li><span class="gray"></span> &ndash; <i>Untracked</i></li>
-                        </ul>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="r_wrap">
+            <div class="r_scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <td rowspan="2">SN</td>
+                            <td [ngClass]="{collapsed: collapsed}" rowspan="2">Full Name</td>
+                            <td [ngClass]="{collapsed: collapsed}" rowspan="2">Dpt</td>
+                            <td [ngClass]="{collapsed: collapsed}" colspan="4">Appearance</td>
+                            <td>
+                                <div *ngIf="!this.collapsed" matTooltip="Collapse Table" class="collapse" matTooltipPosition="above" (click)="collapseTable()"><mat-icon>skip_previous</mat-icon></div>
+                                <div *ngIf="this.collapsed" matTooltip="Collapse Table" class="collapse" matTooltipPosition="above" (click)="collapseTable()"><mat-icon>skip_next</mat-icon></div>
+                                TimeLine
+                                <div matTooltip="Change Timescale" class="tscale" matTooltipPosition="above" (click)="changeTL()"><mat-icon>access_time</mat-icon></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="small" [ngClass]="{collapsed: collapsed}">Came</td>
+                            <td class="small" [ngClass]="{collapsed: collapsed}">Left</td>
+                            <td class="small" [ngClass]="{collapsed: collapsed}">In</td>
+                            <td class="small" [ngClass]="{collapsed: collapsed}">Out</td>
+                            <td class="small">
+                                <table class="tline" [ngClass]="{ws: wideScale}">
+                                    <tr>
+                                        <td>0<sup>00</sup></td>
+                                        <td>1<sup>00</sup></td>
+                                        <td>2<sup>00</sup></td>
+                                        <td>3<sup>00</sup></td>
+                                        <td>4<sup>00</sup></td>
+                                        <td>5<sup>00</sup></td>
+                                        <td>6<sup>00</sup></td>
+                                        <td>7<sup>00</sup></td>
+                                        <td>8<sup>00</sup></td>
+                                        <td>9<sup>00</sup></td>
+                                        <td>10<sup>00</sup></td>
+                                        <td>11<sup>00</sup></td>
+                                        <td>12<sup>00</sup></td>
+                                        <td>13<sup>00</sup></td>
+                                        <td>14<sup>00</sup></td>
+                                        <td>15<sup>00</sup></td>
+                                        <td>16<sup>00</sup></td>
+                                        <td>17<sup>00</sup></td>
+                                        <td>18<sup>00</sup></td>
+                                        <td>19<sup>00</sup></td>
+                                        <td>20<sup>00</sup></td>
+                                        <td>21<sup>00</sup></td>
+                                        <td>22<sup>00</sup></td>
+                                        <td>23<sup>00</sup></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td class="narrow"><b>{{user?.shName}}</b></td>
+                            <td class="name" [ngClass]="{collapsed: collapsed}">{{user?.name}}</td>
+                            <td class="narrow dpt" [ngClass]="{collapsed: collapsed}">{{user?.dpt}}</td>
+                            <td class="narrow" [ngClass]="{collapsed: collapsed}">{{user?.came}}</td>
+                            <td class="narrow" [ngClass]="{collapsed: collapsed}">{{user?.left}}</td>
+                            <td class="narrow" [ngClass]="{collapsed: collapsed}">{{user?.sumIn}}</td>
+                            <td class="narrow" [ngClass]="{collapsed: collapsed}">{{user?.sumOut}}</td>
+                            <td class="tl">
+                                <timeline [allEvents]="user.allEvents"></timeline>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <b>Legend:</b>
+                                <ul>
+                                    <li><span class="green"></span> &ndash; <i>In Office</i></li>
+                                    <li><span class="yellow"></span> &ndash; <i>Out of Office</i></li>
+                                    <li><span class="brick"></span> &ndash; <i>Unknown</i></li>
+                                    <li><span class="gray"></span> &ndash; <i>Untracked</i></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <hfooter></hfooter>

@@ -1,9 +1,31 @@
 <header>
-    <p>Project Logo</p>
-    <h2><mat-icon>face</mat-icon> Hi, {{userInfo.fullName}}! <div matTooltip="Log out" class="logout" (click)="logOutUser()"><mat-icon>exit_to_app</mat-icon></div></h2>
-    <nav>
-        <a matTooltip="User Permissions" routerLink="/settings"><mat-icon>settings</mat-icon></a>
-        <a matTooltip="Show Timeline" routerLink="/timeline"><mat-icon>timeline</mat-icon></a>
-    </nav>
+    <img src="../../assets/ah_logo.svg" height="40">
+    <h2>
+        <mat-icon>face</mat-icon> Hi, {{userInfo.shortName}}! 
+        <div matTooltip="Log out" class="logout" (click)="logOutUser()">
+            <mat-icon>exit_to_app</mat-icon>
+        </div>
+    </h2>
+    <div class="act_block">
+        <div class="pass_change">
+            <mat-icon *ngIf="!changingPass" matTooltip="Change password" (click)="openChPass()">vpn_key</mat-icon>
+            <mat-form-field *ngIf="changingPass">
+                <input matInput type="password" placeholder="Set new password" [(ngModel)]="newPswd" [ngClass]="{err_pswd : pswdErr}">
+            </mat-form-field>
+            <mat-icon *ngIf="changingPass" matTooltip="Update password" (click)="closeChPass()">save</mat-icon>
+        </div>
+        <nav [ngSwitch]="curPage">
+            <ng-template ngSwitchCase="table">
+                <a *ngIf="userInfo.show" matTooltip="User Permissions" routerLink="/settings">
+                    <mat-icon>settings</mat-icon>
+                </a>
+            </ng-template>
+            <ng-template ngSwitchCase="settings">
+                <a matTooltip="Show Timeline" routerLink="/timeline">
+                    <mat-icon>timeline</mat-icon>
+                </a>
+            </ng-template>
+        </nav>
+    </div>
     <router-outlet></router-outlet>
 </header>

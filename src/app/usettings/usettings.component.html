@@ -1,99 +1,95 @@
 <div class="content">
-    <hheader></hheader>
+    <hheader [curPage]="curPage"></hheader>
 
     <div class="container">
         <h2>Set permissions for users</h2>
-        <table>
-            <thead>
-                <tr>
-                    <td>Card ID</td>
-                    <td>Name</td>
-                    <td>Short Name</td>
-                    <td>Password</td>
-                    <td>Capabilities</td>
-                    <td>Items to show</td>
-                    <td>Department</td>
-                    <td>Actions</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users; let i = index">
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{user.cardid}}">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{user.name}}">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{user.shortName}}">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{user.pass}}">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-radio-group>
-                            <mat-radio-button value="r" name="capability{{i}}" [checked]="user.rules === 'R'">Read</mat-radio-button>
-                            <mat-radio-button value="e" name="capability{{i}}" [checked]="user.rules === 'E'">Edit</mat-radio-button>
-                        </mat-radio-group>
-                    </td>
-                    <td>
-                        <mat-radio-group>
-                            <mat-radio-button value="h" name="show{{i}}" [checked]="user.show === 'H'">Himself</mat-radio-button>
-                            <mat-radio-button value="a" name="show{{i}}" [checked]="user.show === 'A'">All</mat-radio-button>
-                        </mat-radio-group>
-                    </td>
-                    <td>
-                        <mat-form-field>
-                            <mat-select [(ngModel)]="user.dpt">
-                                <mat-option *ngFor="let dpt of dpts" [value]="dpt.name">{{dpt.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </td>
-                    <td class="actions_cell">
-                        <mat-icon class="blue_c">save</mat-icon>
-                        <mat-icon class="brick_c" (click)="unsetUser(i)">remove_circle</mat-icon>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="r_wrap">
+            <div class="r_scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Card ID</td>
+                            <td>Full Name</td>
+                            <td>Sh. Name</td>
+                            <td>Role</td>
+                            <td>Department</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users; let i = index" [class.fielderr]="user.errors">
+                            <td class="card_id">
+                                <mat-form-field>
+                                    <input matInput value="{{user.cardid}}" [(ngModel)]="user.cardid" (ngModelChange)="userSaveToggle(i)">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput value="{{user.name}}" [(ngModel)]="user.name" (ngModelChange)="userSaveToggle(i)">
+                                </mat-form-field>
+                            </td>
+                            <td class="shname">
+                                <mat-form-field>
+                                    <input matInput value="{{user.shortName}}" [(ngModel)]="user.shortName" (ngModelChange)="userSaveToggle(i)">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-radio-group [(ngModel)]="user.role" (ngModelChange)="userSaveToggle(i)">
+                                    <mat-radio-button value="admin" name="role{{i}}" [checked]="user.role === 'admin'">Admin</mat-radio-button>
+                                    <mat-radio-button value="user" name="role{{i}}" [checked]="user.role === 'user'">User</mat-radio-button>
+                                </mat-radio-group>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <mat-select [(ngModel)]="user.dpt" (ngModelChange)="userSaveToggle(i)">
+                                        <mat-option *ngFor="let dpt of dpts" [(value)]="dpt.pos">{{dpt.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                            <td class="actions_cell">
+                                <mat-icon *ngIf="user.edited" matTooltip="Update" class="blue_c" (click)="updateUser(i)">save</mat-icon>
+                                <mat-icon matTooltip="Reset password" class="brick_c" (click)="resetPass(i)">recent_actors</mat-icon>
+                                <mat-icon matTooltip="Remove" class="brick_c" (click)="unsetUser(i)">delete_forever</mat-icon>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <button (click)="addNewUser()"><mat-icon>add_circle</mat-icon> Add new user</button>
 
         <h2>Manage departments</h2>
-        <table class="narrow">
-            <thead>
-                <tr>
-                    <td>Dpt. Name</td>
-                    <td>Dpt. address</td>
-                    <td>Actions</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let dpt of dpts; let i = index">
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{dpt.name}}" [(ngModel)]="dpt.name">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field>
-                            <input matInput value="{{dpt.address}}" [(ngModel)]="dpt.address">
-                        </mat-form-field>
-                    </td>
-                    <td class="actions_cell">
-                        <mat-icon class="blue_c">save</mat-icon>
-                        <mat-icon class="brick_c" (click)="unsetDpt(i)">remove_circle</mat-icon>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="r_wrap">
+            <div class="r_scroll t_narrow">
+                <table class="narrow">
+                    <thead>
+                        <tr>
+                            <td>Dpt. Name</td>
+                            <td>Dpt. address</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dpt of dpts; let i = index" [class.fielderr]="dpt.errors">
+                            <td>
+                                <mat-form-field>
+                                    <input matInput value="{{dpt.name}}" [(ngModel)]="dpt.name" (ngModelChange)="dptSaveToggle(i)">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field>
+                                    <input matInput value="{{dpt.address}}" [(ngModel)]="dpt.address" (ngModelChange)="dptSaveToggle(i)">
+                                </mat-form-field>
+                            </td>
+                            <td class="actions_cell">
+                                <mat-icon *ngIf="dpt.edited" matTooltip="Update" class="blue_c" (click)="updateDpt(i)">save</mat-icon>
+                                <mat-icon matTooltip="Remove" class="brick_c" (click)="unsetDpt(i)">delete_forever</mat-icon>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <button (click)="addNewDpt()"><mat-icon>add_circle</mat-icon> Add new department</button>
 
     </div>

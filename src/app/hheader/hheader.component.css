@@ -1,23 +1,28 @@
-:host header {
+/*:host header {
     background-color: #2d4170;
-}
+}*/
 :host header {
-    height: 60px;
+    height: 62px;
     padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 2px solid#2d4170;
     box-sizing: border-box;
 }
 :host header p {
     text-align: center;
-    color: #fff;
+    color: #2d4170;
     padding: 10px 20px;
     line-height: 20px;
     height: 20px;
     float: left;
     font-size: 16px;
 }
-:host header nav {
-    display: block;
+:host header .act_block {
     float: right;
+}
+:host header nav {
+    display: inline-block;
+    /*float: right;*/
     height: 40px;
     line-height: 40px;
 }
@@ -26,11 +31,12 @@
     text-decoration: none;
     font-size: 14px;
     margin-left: 5px;
-    color: #fff;
+    color: #2d4170;
     transition: 0.2s all ease-in-out;
 }
 :host header a:hover {
-    color: #c0e19c;
+    /*color: #c0e19c;*/
+    color: #81bb41;
 }
 
 /* menu block */
@@ -39,11 +45,17 @@
     height: 100%;
     line-height: 100%;
     font-size: 16px;
-    color: #fff;
+    color: #81bb41;
     font-weight: normal;
     margin-left: 10px;
     padding-left: 10px;
-    border-left: 2px solid #fff;
+    border-left: 2px solid #2d4170;
+}
+:host header h2 div .mat-icon {
+    color: #2d4170;
+}
+:host header h2 div .mat-icon:hover {
+    color: #81bb41;
 }
 :host header h2 > div {
     display: inline-block;
@@ -61,5 +73,44 @@
     transition: 0.2s all ease-in-out;
 }
 :host header .logout:hover {
-    color: #c0e19c;
+    color: #81bb41;
+}
+
+/* change pass */
+:host header .pass_change {
+    /*float: right;*/
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+:host header .pass_change .mat-icon {
+    color: #2d4170;
+    cursor: pointer;
+}
+:host header .pass_change .mat-icon:hover {
+    color: #81bb41;
+}
+:host header .pass_change .mat-input-element {
+    width: auto;
+    vertical-align: middle;
+}
+:host header .pass_change .mat-form-field {
+    width: 140px;
+}
+
+/* responsive styles */
+@media (max-width: 480px) {
+    :host header {
+        height: 102px;
+    }
+    :host header h2 {
+        height: 40px;
+    }
+    :host header .act_block {
+        float: none;
+        text-align: center;
+    }
+    :host header h2 {
+        border-left: none;
+    }
 }

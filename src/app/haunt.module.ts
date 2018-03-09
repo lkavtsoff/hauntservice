@@ -5,7 +5,8 @@ import { HttpModule } from '@angular/http';
 import { Routes , RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatIconModule, MatRadioModule, MatSelectModule, MatInputModule, MatTooltipModule } from '@angular/material';
+import { MyDateAdapter } from './dateadapter';
+import { MatIconModule, MatRadioModule, MatSelectModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, DateAdapter, MatSnackBarModule } from '@angular/material';
 
 import { HauntComponent } from './haunt.component';
 import { HheaderComponent } from './hheader/hheader.component';
@@ -36,7 +37,10 @@ const hauntRoutes: Routes = [
         MatRadioModule,
         MatSelectModule,
         MatInputModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule
     ],
     declarations: [
         HauntComponent,
@@ -49,7 +53,8 @@ const hauntRoutes: Routes = [
     ],
     providers: [
         HauntGuard,
-        HauntService
+        HauntService,
+        {provide: DateAdapter, useClass: MyDateAdapter}
     ],
     bootstrap: [
         HauntComponent

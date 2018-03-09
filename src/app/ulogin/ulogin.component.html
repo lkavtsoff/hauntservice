@@ -1,12 +1,12 @@
 <div class="wrap">
-    <p>Project Logo</p>
+    <img src="../../assets/ah_logo.svg" width="280" height="99">
     <!-- <input type="text" placeholder="Worker Name or Shortname" [(ngModel)]="userName"> -->
     <mat-form-field>
-        <input matInput placeholder="Worker Name or Shortname" [(ngModel)]="userName">
+        <input matInput type="text" placeholder="Worker Name or Shortname" [(ngModel)]="userName">
     </mat-form-field>
     <!-- <input type="password" placeholder="Worker Password" [(ngModel)]="userPass"> -->
     <mat-form-field>
-        <input matInput placeholder="Worker Password" [(ngModel)]="userPass">
+        <input matInput type="password" placeholder="Worker Password" [(ngModel)]="userPass">
     </mat-form-field>
     <div class="denied brick" *ngIf="denied">Access denied. Please, attentively verify your personal data.</div>
     <button (click)="verifyUser(userName, userPass)"><mat-icon>input</mat-icon> Sign In</button>

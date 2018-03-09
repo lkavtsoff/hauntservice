@@ -11,13 +11,55 @@ import { uVisits } from './uvisits';
 
 export class VisitsService {
 
-    lastUpd: number = 0;
+    lastUpd : number = 0;
+    usrs4T : any;
 
     constructor (private http: Http, private hauntService: HauntService) {}
+
+    getAllUsers4T() : Observable<any> {
+        let numb : string;
+        if (this.hauntService.permissions.show) {
+            numb = 'all';
+        } else {
+            numb = this.hauntService.permissions.shortName;
+        }
+        return this.http.get('http://localhost:3000/api/users4t/' + numb).map((resp: Response) => {
+            let usrs = resp.json()[0];
+            let dpts = resp.json()[1];
+            for (let i in usrs) {
+                for (let j in dpts) {
+                    if (usrs[i].dpt == dpts[j].pos) {
+                        usrs[i].dpt = dpts[j].name;
+                        break;
+                    }
+                }
+            }
+            this.usrs4T = usrs;
+            return usrs;
+        });
+    }
+    
+    /*getVisits1(date_id) : Observable<any[]> {
+        if (!date_id) {
+            date_id = this.parsedToday();
+        } else {
+            date_id = this.parsedDate(date_id);
+        }
+        return this.http.get('http://localhost:3000/api/visits/' + date_id).map((resp: Response) => {
+            let encodedVisits = resp.json();
+            return encodedVisits;
+        });
+    }*/
     
     getVisits(date_id) : Observable<any[]> {
-        if (!date_id) date_id = '12-10-2017'; 
-        return this.http.get('assets/visits_' + date_id + '.json').map((resp: Response) => {
+        //if (!date_id) date_id = '12-10-2017'; 
+        //return this.http.get('assets/visits_' + date_id + '.json').map((resp: Response) => {
+        if (!date_id) {
+            date_id = this.parsedToday();
+        } else {
+            date_id = this.parsedDate(date_id);
+        }
+        return this.http.get('http://localhost:3000/api/visits/' + date_id).map((resp: Response) => {
             let userList = resp.json().visits;
             let curDate = resp.json().date;
             let curTime = resp.json().lastUpd;
@@ -32,7 +74,9 @@ export class VisitsService {
 
             let users : uVisits[] = [];
 
-            let settings = this.hauntService.allUserSettings;
+            //let settings = this.hauntService.allUserSettings;
+            let settings = this.usrs4T;
+
             for (let i in settings) {
                 let foundU: boolean = false;
                 for (let j in userList) {
@@ -145,6 +189,7 @@ export class VisitsService {
             let diff: number = parseFloat((sum - 100).toFixed(2));
             arr[arr.length - 1].width = (arr[arr.length - 1].width - diff).toFixed(2);
         }
+        // Sometimes throw > 100 - todo
         return arr;
     }
 
@@ -194,7 +239,7 @@ export class VisitsService {
                         ],
                         came: this.parseToText (arr[0].time),
                         left: '?',
-                        in: '0:00',
+                        in: this.parseToText (this.lastUpd - arr[0].time), // '0:00' old state on 21.11.2017
                         out: '0:00'
                     }
                 }
@@ -325,7 +370,7 @@ export class VisitsService {
 
     // Check if Today
     checkToday(date) {
-        let today = new Date(2017, 9, 12);
+        let today = new Date();
         let day: string;
         let month: string;
         let dd: number = today.getDate();
@@ -347,6 +392,33 @@ export class VisitsService {
         } else {
             return '';
         }
+    }
+
+    // Parse Today YYYY-MM-DD
+    parsedToday() {
+        let today = new Date();
+        let day: string;
+        let month: string;
+        let dd: number = today.getDate();
+        let mm: number = today.getMonth();
+        let yyyy: string = today.getFullYear().toString();
+        if (mm < 9) {
+            month = '0' + (mm + 1);
+        } else {
+            month = (mm + 1).toString();
+        }
+        if (dd < 10) {
+            day = '0' + dd;
+        } else {
+            day = dd.toString();
+        }
+        return yyyy + '-' + month + '-' + day ;
+    }
+
+    // Parse not today
+    parsedDate(date) {
+        let parsedArr = (date.split('-'));
+        return parsedArr[2] + '-' + parsedArr[1] + '-' + parsedArr[0];
     }
 
 }

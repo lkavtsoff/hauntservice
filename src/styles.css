@@ -130,9 +130,39 @@ body {
     background-color: #2d4170;
 }
 /* inputs */
+hheader header .pass_change .mat-focused .mat-form-field-ripple,
 ulogin .wrap .mat-focused .mat-form-field-ripple {
     background-color: #2d4170;
 }
+hheader header .pass_change .mat-focused .mat-form-field-placeholder,
 ulogin .wrap .mat-focused .mat-form-field-placeholder {
     color: #2d4170;
+}
+hheader header .pass_change .mat-form-field-infix {
+    border-top: none;
+}
+hheader .err_pswd + .mat-form-field-placeholder-wrapper .mat-form-field-placeholder {
+    color: #f59179;
+}
+/* datepicker */
+.mat-calendar-body-active .mat-calendar-body-selected {
+    background-color: #2d4170;
+}
+.mat-datepicker-toggle .mat-icon {
+    width: 30px;
+    height: 30px;
+}
+/* snackbar */
+.mat-snack-bar-container {
+    background-color: #81bb41;
+}
+
+/* clearfix */
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }

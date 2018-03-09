@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -13,9 +13,8 @@ export class HauntService {
     autorized: boolean = false;
     permissions: any = {
         autorized: false,
-        show: '',
-        rules: '',
-        fullName: ''
+        shortName: "",
+        show: false
     };
 
     allUserSettings: uProfile[] = [];
@@ -35,6 +34,17 @@ export class HauntService {
             this.allDpts = resp.json().departments;
             return [resp.json().permissions, resp.json().departments];
         });
+        /*return this.http.get('http://localhost:3000/api/users').map((resp: Response) => {
+            let encodedSet = resp.json();
+            for (let i=0; i < encodedSet.length; i++) {
+                encodedSet[i].pass = this.decodeStr(encodedSet[i].pass);
+            }
+            this.allUserSettings = encodedSet;
+            return resp.json().permissions;
+            //this.allDpts = resp.json().departments;
+            
+            //return [resp.json().permissions, resp.json().departments];
+        });*/
     }
 
     getUserSettings() {
@@ -68,6 +78,25 @@ export class HauntService {
             }
         }
         return passEncoded;
+    }
+
+    validatePswd(pswd) {
+        let correct = pswd.search( /^[0-9a-zA-Z!@#$%^&*-_]{6,}/ );
+        if (correct == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    changePswd(pswd) {
+        let body = JSON.stringify({
+            shortName: this.permissions.shortName,
+            newPswd: btoa(pswd)
+        });
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8'});
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put('http://localhost:3000/api/updpswd', body, options).map( (resp:Response) => {return resp.json();} );
     }
 
 }

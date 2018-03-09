@@ -16,8 +16,17 @@
 }
 
 /* Common table */
+:host .container .r_wrap {
+    overflow-x: auto;
+}
+:host .container .r_wrap .r_scroll {
+    min-width: 630px;
+}
+:host .container .r_wrap .r_scroll.t_narrow {
+    min-width: 400px;
+}
 :host .container table {
-    width: 100%;
+    width: 630px;
     /*border-collapse: collapse;*/
     border-radius: 4px;
     border: 1px solid #2d4170;
@@ -44,6 +53,7 @@
 }
 :host .container table tr td:last-child {
     border-right: none;
+    width: 80px;
 }
 :host .container table tbody tr:last-child td {
     border-bottom: none;
@@ -62,6 +72,25 @@
 }
 :host .container table tbody tr td {
     font-size: 12px;
+    border-right: none;
+    border-bottom: none;
+    text-align: center;
+}
+:host .container table tbody tr.fielderr td,
+:host .container table tbody tr.fielderr:hover td {
+    background-color: rgba(245, 145, 121, 0.4);
+}
+:host .container table tbody tr:hover td {
+    background-color: rgba(251, 245, 135, 0.4);
+}
+:host .container table tbody tr:last-child td {
+    padding-bottom: 4px;
+}
+:host .container table tbody tr td.card_id .mat-form-field {
+    width: 80px;
+}
+:host .container table tbody tr td.shname .mat-form-field {
+    width: 40px;
 }
 
 /* buttons */
@@ -115,9 +144,6 @@
 }
 
 /* actions cell */
-:host .container table tr td.actions_cell {
-    text-align: center;
-}
 :host .container table tr td.actions_cell .mat-icon {
     line-height: 30px;
     font-size: 22px;
@@ -125,6 +151,14 @@
     /*color: #2d4170;*/
     transition: 0.2s all ease-in-out;
 }
-:host .container table tr td.actions_cell .mat-icon:hover {
+/*:host .container table tr td.actions_cell .mat-icon:hover {
     transform: scale(1.2);
+}*/
+
+/* responsive styles */
+@media (max-width: 1018px) {
+    :host .container {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
